@@ -628,32 +628,39 @@ function setMetric(metric, btn) {
 
 // Fetch Provinces Data from Backend API or compute from local fallback
 async function loadProvincesData() {
+  let apiLoaded = false;
   try {
     const res = await fetch('/api/provinces');
     if (res.ok) {
       const json = await res.json();
-      if (json.success && Array.isArray(json.data)) {
+      if (json && json.success && Array.isArray(json.data) && json.data.length > 0) {
         PROVINCES_DATA = {};
         json.data.forEach(p => {
           PROVINCES_DATA[p.provinsi] = p;
         });
+        apiLoaded = true;
       }
     }
-  } catch (err) {
-    console.warn('Backend API offline, using embedded official 38 provinces dataset.');
+  } catch (err) {}
+
+  if (!apiLoaded) {
+    PROVINCES_DATA = { ...INITIAL_PROVINCES_DATA };
   }
 
-  // Also fetch summary stats
+  // Summary stats
+  let statsLoaded = false;
   try {
     const resStats = await fetch('/api/stats/summary');
     if (resStats.ok) {
       const jsonStats = await resStats.json();
-      if (jsonStats.success && jsonStats.stats) {
+      if (jsonStats && jsonStats.success && jsonStats.stats) {
         updateKPIBanner(jsonStats.stats);
+        statsLoaded = true;
       }
     }
-  } catch (e) {
-    // Compute summary stats from local data
+  } catch (e) {}
+
+  if (!statsLoaded) {
     const list = Object.values(PROVINCES_DATA);
     const totalPop = list.reduce((acc, p) => acc + (p.penduduk_2026 || 0), 0);
     const totalArea = list.reduce((acc, p) => acc + (p.luas_km2 || 0), 0);
