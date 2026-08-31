@@ -6,7 +6,7 @@
   <meta name="description" content="Portal Data Kependudukan & Geospasial Indonesia 2026 — Visualisasi Sosio-Demografi 38 Provinsi">
   <title>Portal Data Kependudukan & Geospasial Indonesia 2026</title>
 
-  <!-- Google Fonts & Leaflet CSS & PDF.js (CDN for reliable client text extraction) -->
+  <!-- Google Fonts & Leaflet CSS & PDF.js -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -15,13 +15,12 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script>
-    // Setup PDF.js worker
     if (window.pdfjsLib) {
       pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     }
   </script>
 
-  <!-- Fallback Embedded GeoJSON -->
+  <!-- Embedded GeoJSON & CSS -->
   <script src="assets/js/indonesia_geojson.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -40,23 +39,23 @@
             Portal Kependudukan Indonesia
             <span class="brand-badge">BPS 2026</span>
           </h1>
-          <p>Informasi Geospasial & Sosio-Demografi 38 Provinsi Indonesia</p>
+          <p>Informasi Geospasial &amp; Sosio-Demografi 38 Provinsi Indonesia</p>
         </div>
       </div>
 
       <div class="topbar-actions">
         <button class="btn-action" onclick="openTableModal()">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+          <svg class="icon-svg" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
           <span>Tabel 38 Provinsi</span>
         </button>
 
         <button class="btn-action" onclick="downloadCSV()">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
           <span>Unduh CSV</span>
         </button>
 
         <button class="btn-action admin" id="adminPortalBtn" onclick="openAdminModal()">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          <svg class="icon-svg" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
           <span id="adminBtnText">Admin Portal</span>
         </button>
 
@@ -118,20 +117,30 @@
     <section class="control-bar">
       <div class="metric-tabs">
         <span style="font-size:11px; font-weight:800; color:var(--text-muted); text-transform:uppercase; margin-right:4px;">Metrik:</span>
+        
         <button class="tab-btn active" onclick="setMetric('penduduk', this)">
-          <span>👥 Jumlah Penduduk</span>
+          <svg class="icon-svg" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          <span>Jumlah Penduduk</span>
         </button>
+
         <button class="tab-btn" onclick="setMetric('agama', this)">
-          <span>🕌 Mayoritas Agama</span>
+          <svg class="icon-svg" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+          <span>Mayoritas Agama</span>
         </button>
+
         <button class="tab-btn" onclick="setMetric('ekonomi', this)">
-          <span>💼 Mata Pencaharian &amp; Ekonomi</span>
+          <svg class="icon-svg" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+          <span>Mata Pencaharian &amp; Ekonomi</span>
         </button>
+
         <button class="tab-btn" onclick="setMetric('ipm', this)">
-          <span>📈 Indeks IPM</span>
+          <svg class="icon-svg" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+          <span>Indeks IPM</span>
         </button>
+
         <button class="tab-btn" onclick="setMetric('kemiskinan', this)">
-          <span>📉 Kemiskinan (%)</span>
+          <svg class="icon-svg" viewBox="0 0 24 24"><line x1="19" y1="5" x2="5" y2="19"></line><circle cx="6.5" cy="6.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle></svg>
+          <span>Kemiskinan (%)</span>
         </button>
       </div>
 
@@ -221,7 +230,7 @@
         <!-- Religion Breakdown -->
         <div class="drawer-card">
           <h4>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg>
+            <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg>
             Komposisi Agama
           </h4>
           <div class="religion-bars">
@@ -261,7 +270,7 @@
         <!-- Livelihood & Economic Sectors -->
         <div class="drawer-card">
           <h4>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+            <svg class="icon-svg" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
             Mata Pencaharian &amp; Sektor Utama
           </h4>
           <p id="dLivelihood" style="font-size:12.5px; line-height:1.5; color:var(--text-soft);">-</p>
@@ -271,7 +280,7 @@
         <!-- Demographics & Ethnic -->
         <div class="drawer-card">
           <h4>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+            <svg class="icon-svg" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
             Suku Bangsa &amp; Wilayah
           </h4>
           <p id="dEthnic" style="font-size:12px; color:var(--text-soft);">-</p>
@@ -297,7 +306,10 @@
     <div class="modal-content" style="max-width:680px;">
       <div class="modal-header">
         <div>
-          <h3>🔐 Admin Portal &amp; Manajemen Data</h3>
+          <h3>
+            <svg class="icon-svg" style="color:var(--primary); margin-right:4px;" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            Admin Portal &amp; Manajemen Data
+          </h3>
           <p style="font-size:12px; color:var(--text-muted);" id="adminModalSubtitle">Login untuk memperbarui data provinsi dan mengelola sistem</p>
         </div>
         <button class="close-btn" onclick="closeAdminModal()">
@@ -350,9 +362,18 @@
 
         <!-- Admin Tabs -->
         <div class="admin-nav">
-          <button class="admin-nav-btn active" onclick="switchAdminTab('upload', this)">📄 Upload &amp; Perbarui PDF</button>
-          <button class="admin-nav-btn" onclick="switchAdminTab('credentials', this)">⚙️ Ubah Username &amp; Password</button>
-          <button class="admin-nav-btn" onclick="switchAdminTab('logs', this)">📋 Riwayat Pembaruan</button>
+          <button class="admin-nav-btn active" onclick="switchAdminTab('upload', this)">
+            <svg class="icon-svg" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="12" y2="12"></line><line x1="15" y1="15" x2="12" y2="12"></line></svg>
+            <span>Upload &amp; Perbarui PDF</span>
+          </button>
+          <button class="admin-nav-btn" onclick="switchAdminTab('credentials', this)">
+            <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            <span>Ubah Username &amp; Password</span>
+          </button>
+          <button class="admin-nav-btn" onclick="switchAdminTab('logs', this)">
+            <svg class="icon-svg" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>
+            <span>Riwayat Pembaruan</span>
+          </button>
         </div>
 
         <!-- TAB 1: UPLOAD PDF -->
@@ -364,7 +385,7 @@
             </div>
             <div style="display:flex; gap:6px;">
               <a href="/api/template/pdf" class="btn-action" target="_blank" download>
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                 <span>Unduh Template PDF</span>
               </a>
               <button type="button" class="btn-action" onclick="copyTemplateSample()">

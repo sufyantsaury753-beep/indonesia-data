@@ -90,6 +90,19 @@ body {
   font-family: var(--font-mono);
 }
 
+.icon-svg {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  stroke-width: 2;
+  stroke: currentColor;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
 /* APP CONTAINER */
 .app-container {
   width: min(1480px, 96%);
