@@ -1,7 +1,0 @@
-{
-  "cleanUrls": true,
-  "rewrites": [
-    { "source": "/api/template/pdf", "destination": "/assets/templates/Template_Pembaruan_Data_Jawa_Barat.pdf" },
-    { "source": "/api/template/text", "destination": "/assets/templates/Template_Pembaruan_Data_Jawa_Barat.txt" }
-  ]
-}
