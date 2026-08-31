@@ -440,6 +440,13 @@ function normalizeProvinceName(raw) {
   return raw.trim();
 }
 
+// Extract Province Name from GeoJSON Feature Properties
+function getFeatureProvinceName(props) {
+  if (!props) return '';
+  const raw = props.PROVINSI || props.Propinsi || props.name || props.provinsi || props.NAME_1 || props.state || '';
+  return normalizeProvinceName(raw);
+}
+
 // Color Scaler for 5 Clean Metrics
 function getMetricColor(val, metric) {
   if (val === null || val === undefined) return '#94a3b8';
@@ -491,8 +498,7 @@ function getMetricColor(val, metric) {
 
 // Map Feature Style with Dynamic Region Filter & Color Coding
 function styleFeature(feature) {
-  const rawName = feature.properties?.Propinsi || feature.properties?.name || '';
-  const name = normalizeProvinceName(rawName);
+  const name = getFeatureProvinceName(feature.properties);
   const pData = PROVINCES_DATA[name];
 
   let val = 0;
@@ -691,8 +697,7 @@ function initMapLayers() {
   GEOJSON_LAYER = L.geoJSON(geojsonSource, {
     style: styleFeature,
     onEachFeature: function(feature, layer) {
-      const rawName = feature.properties?.Propinsi || feature.properties?.name || '';
-      const name = normalizeProvinceName(rawName);
+      const name = getFeatureProvinceName(feature.properties);
 
       layer.on({
         mouseover: function(e) {
@@ -813,7 +818,7 @@ function handleSearch(query) {
   const match = Object.keys(PROVINCES_DATA).find(k => k.toLowerCase().includes(q));
   if (match && GEOJSON_LAYER) {
     GEOJSON_LAYER.eachLayer(layer => {
-      const name = normalizeProvinceName(layer.feature?.properties?.Propinsi || '');
+      const name = getFeatureProvinceName(layer.feature?.properties);
       if (name === match) {
         openProvinceDrawer(match, layer);
       }
@@ -835,7 +840,7 @@ function filterRegion(region) {
 
   const matched = [];
   GEOJSON_LAYER.eachLayer(layer => {
-    const name = normalizeProvinceName(layer.feature?.properties?.Propinsi || '');
+    const name = getFeatureProvinceName(layer.feature?.properties);
     const p = PROVINCES_DATA[name];
     if (p && p.region === region) {
       matched.push(layer);
