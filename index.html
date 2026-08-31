@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portal Data Kependudukan & Geospasial Indonesia 2026 — Visualisasi Sosio-Demografi 38 Provinsi">
+  <title>Portal Data Kependudukan & Geospasial Indonesia 2026</title>
+
+  <!-- Google Fonts & Leaflet CSS & PDF.js (CDN for reliable client text extraction) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    // Setup PDF.js worker
+    if (window.pdfjsLib) {
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+  </script>
+
+  <!-- Fallback Embedded GeoJSON -->
+  <script src="assets/js/indonesia_geojson.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="brand-section">
+        <div class="brand-emblem">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
+        </div>
+        <div class="brand-info">
+          <h1>
+            Portal Kependudukan Indonesia
+            <span class="brand-badge">BPS 2026</span>
+          </h1>
+          <p>Informasi Geospasial & Sosio-Demografi 38 Provinsi Indonesia</p>
+        </div>
+      </div>
+
+      <div class="topbar-actions">
+        <button class="btn-action" onclick="openTableModal()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+          <span>Tabel 38 Provinsi</span>
+        </button>
+
+        <button class="btn-action" onclick="downloadCSV()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          <span>Unduh CSV</span>
+        </button>
+
+        <button class="btn-action admin" id="adminPortalBtn" onclick="openAdminModal()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          <span id="adminBtnText">Admin Portal</span>
+        </button>
+
+        <button class="theme-btn" id="themeToggleBtn" aria-label="Ganti Tema" onclick="toggleTheme()">
+          <svg width="16" height="16" id="themeIconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          <svg width="16" height="16" id="themeIconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 4 NATIONAL KPI STRIP -->
+    <section class="kpi-strip">
+      <div class="kpi-box">
+        <div class="kpi-icon blue">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        </div>
+        <div class="kpi-text">
+          <span>Total Penduduk Indonesia</span>
+          <strong class="num-mono" id="kpiPop">284,94 Juta</strong>
+          <small>38 Provinsi Resmi</small>
+        </div>
+      </div>
+
+      <div class="kpi-box">
+        <div class="kpi-icon green">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+        </div>
+        <div class="kpi-text">
+          <span>Rata-Rata IPM Nasional</span>
+          <strong class="num-mono" id="kpiIPM">73.06</strong>
+          <small>Status: Kategori Tinggi</small>
+        </div>
+      </div>
+
+      <div class="kpi-box">
+        <div class="kpi-icon amber">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline><polyline points="17 18 23 18 23 12"></polyline></svg>
+        </div>
+        <div class="kpi-text">
+          <span>Rata-Rata Kemiskinan</span>
+          <strong class="num-mono" id="kpiPoverty">11.80%</strong>
+          <small>Pemerataan Nasional</small>
+        </div>
+      </div>
+
+      <div class="kpi-box">
+        <div class="kpi-icon purple">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
+        </div>
+        <div class="kpi-text">
+          <span>Total Luas Daratan</span>
+          <strong class="num-mono" id="kpiArea">1.929.574 km²</strong>
+          <small>Kepadatan: 147,7 jiwa/km²</small>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTROL BAR -->
+    <section class="control-bar">
+      <div class="metric-tabs">
+        <span style="font-size:11px; font-weight:800; color:var(--text-muted); text-transform:uppercase; margin-right:4px;">Metrik:</span>
+        <button class="tab-btn active" onclick="setMetric('penduduk', this)">
+          <span>👥 Jumlah Penduduk</span>
+        </button>
+        <button class="tab-btn" onclick="setMetric('agama', this)">
+          <span>🕌 Mayoritas Agama</span>
+        </button>
+        <button class="tab-btn" onclick="setMetric('ekonomi', this)">
+          <span>💼 Mata Pencaharian &amp; Ekonomi</span>
+        </button>
+        <button class="tab-btn" onclick="setMetric('ipm', this)">
+          <span>📈 Indeks IPM</span>
+        </button>
+        <button class="tab-btn" onclick="setMetric('kemiskinan', this)">
+          <span>📉 Kemiskinan (%)</span>
+        </button>
+      </div>
+
+      <div class="search-filter-group">
+        <div class="search-box">
+          <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" id="searchInput" placeholder="Cari provinsi (misal: Jawa Barat, Bali)..." oninput="handleSearch(this.value)">
+        </div>
+
+        <select class="region-select" id="regionSelect" onchange="filterRegion(this.value)">
+          <option value="all">Semua Wilayah</option>
+          <option value="Sumatera">Sumatera</option>
+          <option value="Jawa">Jawa</option>
+          <option value="Bali-Nusa Tenggara">Bali &amp; Nusa Tenggara</option>
+          <option value="Kalimantan">Kalimantan</option>
+          <option value="Sulawesi">Sulawesi</option>
+          <option value="Maluku-Papua">Maluku &amp; Papua</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- MAP WORKSPACE -->
+    <main class="map-workspace">
+      <div id="map"></div>
+
+      <!-- Basemap Switcher -->
+      <div class="basemap-picker">
+        <button class="basemap-btn active" onclick="switchBasemap('light', this)">Terang</button>
+        <button class="basemap-btn" onclick="switchBasemap('dark', this)">Gelap</button>
+        <button class="basemap-btn" onclick="switchBasemap('osm', this)">OSM</button>
+        <button class="basemap-btn" onclick="switchBasemap('satellite', this)">Satelit</button>
+      </div>
+
+      <!-- Quick Hover Badge -->
+      <div class="quick-badge" id="quickBadge" style="display:none;">
+        <span style="font-size:10px; color:var(--text-muted); text-transform:uppercase;">Provinsi</span>
+        <strong id="badgeTitle">-</strong>
+        <span id="badgeSubtitle" style="font-size:11.5px; color:var(--text-soft);">-</span>
+      </div>
+
+      <!-- Legend -->
+      <div class="map-legend" id="mapLegend">
+        <div class="legend-head" id="legendTitle">Jumlah Penduduk</div>
+        <div class="legend-items" id="legendList"></div>
+      </div>
+
+      <!-- Province Detail Drawer -->
+      <aside class="province-drawer" id="provinceDrawer">
+        <div class="drawer-top">
+          <div>
+            <span class="brand-badge" id="dKode">Kode BPS: -</span>
+            <h2 id="dTitle">-</h2>
+            <p id="dSubtitle">-</p>
+          </div>
+          <button class="close-btn" onclick="closeDrawer()" aria-label="Tutup">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+
+        <div class="drawer-stats">
+          <div class="stat-item">
+            <span>Penduduk 2026</span>
+            <strong class="num-mono" id="dPop">-</strong>
+          </div>
+          <div class="stat-item">
+            <span>Kepadatan</span>
+            <strong class="num-mono" id="dDensity">-</strong>
+          </div>
+          <div class="stat-item">
+            <span>Luas Wilayah</span>
+            <strong class="num-mono" id="dArea">-</strong>
+          </div>
+          <div class="stat-item">
+            <span>Indeks IPM</span>
+            <strong class="num-mono" id="dIPM" style="color:var(--primary);">-</strong>
+          </div>
+          <div class="stat-item">
+            <span>Tingkat Kemiskinan</span>
+            <strong class="num-mono" id="dPoverty">-</strong>
+          </div>
+          <div class="stat-item">
+            <span>PDRB / Kapita</span>
+            <strong class="num-mono" id="dPDRB">-</strong>
+          </div>
+        </div>
+
+        <!-- Religion Breakdown -->
+        <div class="drawer-card">
+          <h4>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg>
+            Komposisi Agama
+          </h4>
+          <div class="religion-bars">
+            <div class="rel-row">
+              <span class="rel-name">Islam</span>
+              <div class="rel-bar-wrap"><div class="rel-bar-fill" id="barIslam" style="width:0%; background:var(--emerald);"></div></div>
+              <span class="rel-val" id="valIslam">0%</span>
+            </div>
+            <div class="rel-row">
+              <span class="rel-name">Kristen</span>
+              <div class="rel-bar-wrap"><div class="rel-bar-fill" id="barKristen" style="width:0%; background:var(--primary);"></div></div>
+              <span class="rel-val" id="valKristen">0%</span>
+            </div>
+            <div class="rel-row">
+              <span class="rel-name">Katolik</span>
+              <div class="rel-bar-wrap"><div class="rel-bar-fill" id="barKatolik" style="width:0%; background:var(--purple);"></div></div>
+              <span class="rel-val" id="valKatolik">0%</span>
+            </div>
+            <div class="rel-row">
+              <span class="rel-name">Hindu</span>
+              <div class="rel-bar-wrap"><div class="rel-bar-fill" id="barHindu" style="width:0%; background:var(--amber);"></div></div>
+              <span class="rel-val" id="valHindu">0%</span>
+            </div>
+            <div class="rel-row">
+              <span class="rel-name">Buddha</span>
+              <div class="rel-bar-wrap"><div class="rel-bar-fill" id="barBuddha" style="width:0%; background:var(--cyan);"></div></div>
+              <span class="rel-val" id="valBuddha">0%</span>
+            </div>
+            <div class="rel-row">
+              <span class="rel-name">Konghucu</span>
+              <div class="rel-bar-wrap"><div class="rel-bar-fill" id="barKonghucu" style="width:0%; background:var(--rose);"></div></div>
+              <span class="rel-val" id="valKonghucu">0%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Livelihood & Economic Sectors -->
+        <div class="drawer-card">
+          <h4>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+            Mata Pencaharian &amp; Sektor Utama
+          </h4>
+          <p id="dLivelihood" style="font-size:12.5px; line-height:1.5; color:var(--text-soft);">-</p>
+          <div id="dEconomyBadges" style="margin-top:8px;"></div>
+        </div>
+
+        <!-- Demographics & Ethnic -->
+        <div class="drawer-card">
+          <h4>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+            Suku Bangsa &amp; Wilayah
+          </h4>
+          <p id="dEthnic" style="font-size:12px; color:var(--text-soft);">-</p>
+          <small id="dAdmin" style="display:block; margin-top:6px; font-size:11px; color:var(--text-muted);">-</small>
+        </div>
+      </aside>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="app-footer">
+      <div>
+        <strong>Portal Geospasial Kependudukan Indonesia 2026</strong> · Data Terstandarisasi BPS, Dukcapil &amp; BIG
+      </div>
+      <div>
+        Sistem Database SQLite &amp; Pembaruan Data PDF
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- MODAL: ADMIN PORTAL -->
+  <div class="modal-overlay" id="adminModal" onclick="if(event.target===this) closeAdminModal()">
+    <div class="modal-content" style="max-width:680px;">
+      <div class="modal-header">
+        <div>
+          <h3>🔐 Admin Portal &amp; Manajemen Data</h3>
+          <p style="font-size:12px; color:var(--text-muted);" id="adminModalSubtitle">Login untuk memperbarui data provinsi dan mengelola sistem</p>
+        </div>
+        <button class="close-btn" onclick="closeAdminModal()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <!-- VIEW 1: LOGIN FORM (Shown when NOT logged in) -->
+      <div id="adminLoginForm">
+        <div class="alert info">
+          <div>
+            <strong>Kredensial Default Admin:</strong><br>
+            Username: <code class="num-mono">admin</code> | Password: <code class="num-mono">admin123</code>
+          </div>
+        </div>
+
+        <div id="loginAlertBox" style="display:none;"></div>
+
+        <form onsubmit="handleAdminLogin(event)">
+          <div class="form-group">
+            <label for="adminUsernameInput">Username:</label>
+            <input type="text" id="adminUsernameInput" class="form-control" placeholder="Masukkan username admin" required>
+          </div>
+
+          <div class="form-group">
+            <label for="adminPasswordInput">Password:</label>
+            <input type="password" id="adminPasswordInput" class="form-control" placeholder="Masukkan password" required>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:16px;">
+            <button type="button" class="btn-action" onclick="closeAdminModal()">Batal</button>
+            <button type="submit" class="btn-action primary" id="loginSubmitBtn">
+              <span>Masuk sebagai Admin</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- VIEW 2: ADMIN DASHBOARD (Shown when logged in) -->
+      <div id="adminDashboardView" style="display:none;">
+        
+        <!-- User Status Bar -->
+        <div style="display:flex; justify-content:space-between; align-items:center; background:var(--surface-alt); padding:10px 14px; border-radius:var(--radius-sm); margin-bottom:14px; border:1px solid var(--border);">
+          <div>
+            <span style="font-size:11px; color:var(--text-muted);">Status:</span>
+            <strong style="color:var(--emerald); margin-left:4px;">● Terautentikasi</strong> sebagai <span id="activeAdminUser" style="font-weight:700;">admin</span>
+          </div>
+          <button class="btn-action danger" style="padding:4px 10px; font-size:11.5px;" onclick="handleAdminLogout()">Logout</button>
+        </div>
+
+        <!-- Admin Tabs -->
+        <div class="admin-nav">
+          <button class="admin-nav-btn active" onclick="switchAdminTab('upload', this)">📄 Upload &amp; Perbarui PDF</button>
+          <button class="admin-nav-btn" onclick="switchAdminTab('credentials', this)">⚙️ Ubah Username &amp; Password</button>
+          <button class="admin-nav-btn" onclick="switchAdminTab('logs', this)">📋 Riwayat Pembaruan</button>
+        </div>
+
+        <!-- TAB 1: UPLOAD PDF -->
+        <div class="admin-panel active" id="adminTabUpload">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
+            <div>
+              <strong style="font-size:13px;">Format Baku Wajib PDF:</strong>
+              <p style="font-size:11.5px; color:var(--text-muted);">Unggah file PDF yang memuat struktur data provinsi sesuai template</p>
+            </div>
+            <div style="display:flex; gap:6px;">
+              <a href="/api/template/pdf" class="btn-action" target="_blank" download>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <span>Unduh Template PDF</span>
+              </a>
+              <button type="button" class="btn-action" onclick="copyTemplateSample()">
+                <span>Salin Teks Format</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Drag & Drop Zone -->
+          <div class="dropzone" id="pdfDropzone" onclick="document.getElementById('pdfFileInput').click()">
+            <svg class="dropzone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="12" y2="12"></line><line x1="15" y1="15" x2="12" y2="12"></line></svg>
+            <h4>Klik atau Tarik File PDF ke Sini</h4>
+            <p>Sistem akan memvalidasi apakah format sesuai template resmi sebelum menyimpan ke database</p>
+            <input type="file" id="pdfFileInput" accept=".pdf,.txt" style="display:none;" onchange="handleFileSelected(this.files[0])">
+          </div>
+
+          <div id="uploadFeedback"></div>
+
+          <!-- Live Diff & Submit -->
+          <div id="uploadResultDiff" style="display:none;"></div>
+        </div>
+
+        <!-- TAB 2: CHANGE CREDENTIALS -->
+        <div class="admin-panel" id="adminTabCredentials">
+          <div id="credAlertBox" style="display:none;"></div>
+
+          <form onsubmit="handleChangeCredentials(event)">
+            <div class="form-group">
+              <label for="curPassword">Password Saat Ini (Wajib):</label>
+              <input type="password" id="curPassword" class="form-control" placeholder="Masukkan password saat ini untuk konfirmasi" required>
+            </div>
+
+            <div class="form-group">
+              <label for="newUsername">Username Baru (Opsional):</label>
+              <input type="text" id="newUsername" class="form-control" placeholder="Biarkan kosong jika tidak ingin mengubah username">
+            </div>
+
+            <div class="form-group">
+              <label for="newPassword">Password Baru (Opsional):</label>
+              <input type="password" id="newPassword" class="form-control" placeholder="Minimal 6 karakter">
+            </div>
+
+            <div class="form-group">
+              <label for="confirmPassword">Konfirmasi Password Baru:</label>
+              <input type="password" id="confirmPassword" class="form-control" placeholder="Ulangi password baru">
+            </div>
+
+            <div style="display:flex; justify-content:flex-end; margin-top:16px;">
+              <button type="submit" class="btn-action primary" id="saveCredBtn">Simpan Perubahan Kredensial</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- TAB 3: UPLOAD LOGS -->
+        <div class="admin-panel" id="adminTabLogs">
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Waktu</th>
+                  <th>File</th>
+                  <th>Pengguna</th>
+                  <th>Status</th>
+                  <th>Provinsi</th>
+                  <th>Keterangan</th>
+                </tr>
+              </thead>
+              <tbody id="logsTableBody">
+                <tr><td colspan="6" style="text-align:center; color:var(--text-muted);">Memuat riwayat...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: DATA TABLE 38 PROVINSI -->
+  <div class="modal-overlay" id="tableModal" onclick="if(event.target===this) closeTableModal()">
+    <div class="modal-content" style="max-width:980px;">
+      <div class="modal-header">
+        <div>
+          <h3>Data Lengkap 38 Provinsi Indonesia (2026)</h3>
+          <p style="font-size:12px; color:var(--text-muted);">Tabel referensi statistik terintegrasi database SQLite</p>
+        </div>
+        <button class="close-btn" onclick="closeTableModal()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <div style="margin-bottom:12px;">
+        <input type="text" id="tableModalSearch" placeholder="Filter di dalam tabel..." oninput="filterModalTable(this.value)" class="form-control">
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Kode</th>
+              <th>Provinsi</th>
+              <th>Ibukota</th>
+              <th>Region</th>
+              <th>Penduduk 2026</th>
+              <th>Luas (km²)</th>
+              <th>Kepadatan</th>
+              <th>IPM</th>
+              <th>Kemiskinan</th>
+              <th>Mayoritas Agama</th>
+            </tr>
+          </thead>
+          <tbody id="fullTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- APPLICATION JAVASCRIPT -->
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "name": "portal-kependudukan-indonesia-2026",
+  "version": "2.0.0",
+  "description": "Portal Geospasial & Data Kependudukan 38 Provinsi Indonesia dengan Database SQLite, Admin Login, dan Pembaruan Otomatis via PDF",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "indonesia",
+    "kependudukan",
+    "geospatial",
+    "bps",
+    "sqlite",
+    "admin-portal",
+    "pdf-updater"
+  ],
+  "author": "Sufyan Tsaury",
+  "license": "ISC"
+}
