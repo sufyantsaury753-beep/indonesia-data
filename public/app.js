@@ -1417,6 +1417,10 @@ JUMLAH_KAB_KOTA: 18 Kab, 9 Kota
     await navigator.clipboard.writeText(sample);
     alert('Contoh format teks template berhasil disalin ke papan klip (clipboard)!');
   } catch (e) {
+    alert('Gagal menyalin template.');
+  }
+}
+
 // Load Audit Upload Logs
 async function loadUploadLogs() {
   const tbody = document.getElementById('logsTableBody');
