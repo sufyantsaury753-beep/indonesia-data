@@ -1,0 +1,70 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 1633 >>
+stream
+BT
+/F1 9 Tf
+40 760 Td
+13 TL
+(=======================================================) Tj T*
+(FORMAT RESMI PEMBARUAN DATA SOSIO-DEMOGRAFI PROVINSI) Tj T*
+(PORTAL KEPENDUDUKAN INDONESIA 2026) Tj T*
+(=======================================================) Tj T*
+(PROVINSI: Jawa Barat) Tj T*
+(IBUKOTA: Bandung) Tj T*
+(REGION: Jawa) Tj T*
+(JUMLAH_PENDUDUK: 50850000) Tj T*
+(LUAS_KM2: 35378) Tj T*
+(IPM: 75.10) Tj T*
+(KEMISKINAN_PERSEN: 7.35) Tj T*
+() Tj T*
+([KOMPOSISI_AGAMA]) Tj T*
+(ISLAM: 97.10%) Tj T*
+(KRISTEN: 1.80%) Tj T*
+(KATOLIK: 0.65%) Tj T*
+(HINDU: 0.05%) Tj T*
+(BUDDHA: 0.20%) Tj T*
+(KONGHUCU: 0.20%) Tj T*
+() Tj T*
+([SOSIO_EKONOMI]) Tj T*
+(MATA_PENCAHARIAN: Industri Manufaktur 45%, Pertanian & Perkebunan 30%, Perdagangan & Jasa 25%) Tj T*
+(SEKTOR_UNGGULAN: Manufaktur Otomotif & Elektronik, Tekstil, Agroindustri Teh & Padi) Tj T*
+(SUKU_MAYORITAS: Sunda, Jawa \(Cirebon/Indramayu\), Betawi) Tj T*
+(PDRB_KAPITA_JUTA: 57.8) Tj T*
+(JUMLAH_KAB_KOTA: 18 Kab, 9 Kota) Tj T*
+(=======================================================) Tj T*
+(* PETUNJUK PENGISIAN:) Tj T*
+(1. Pastikan nama provinsi sesuai dengan 38 provinsi resmi di Indonesia.) Tj T*
+(2. Jumlah penduduk diisi dengan angka bulat atau dengan akhiran 'Juta' \(misal: 50.85 Juta\).) Tj T*
+(3. Total persentase seluruh agama \(Islam, Kristen, Katolik, Hindu, Buddha, Konghucu\) harus berjumlah 100%.) Tj T*
+(4. Field MATA_PENCAHARIAN dan SEKTOR_UNGGULAN wajib diisi deskripsinya.) Tj T*
+(5. Anda dapat menyalin blok di atas beberapa kali dalam 1 file untuk memperbarui banyak provinsi sekaligus.) Tj T*
+(=======================================================) Tj T*
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000234 00000 n 
+0000000300 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+380
+%%EOF

@@ -1,0 +1,34 @@
+=======================================================
+FORMAT RESMI PEMBARUAN DATA SOSIO-DEMOGRAFI PROVINSI
+PORTAL KEPENDUDUKAN INDONESIA 2026
+=======================================================
+PROVINSI: Jawa Barat
+IBUKOTA: Bandung
+REGION: Jawa
+JUMLAH_PENDUDUK: 50850000
+LUAS_KM2: 35378
+IPM: 75.10
+KEMISKINAN_PERSEN: 7.35
+
+[KOMPOSISI_AGAMA]
+ISLAM: 97.10%
+KRISTEN: 1.80%
+KATOLIK: 0.65%
+HINDU: 0.05%
+BUDDHA: 0.20%
+KONGHUCU: 0.20%
+
+[SOSIO_EKONOMI]
+MATA_PENCAHARIAN: Industri Manufaktur 45%, Pertanian & Perkebunan 30%, Perdagangan & Jasa 25%
+SEKTOR_UNGGULAN: Manufaktur Otomotif & Elektronik, Tekstil, Agroindustri Teh & Padi
+SUKU_MAYORITAS: Sunda, Jawa (Cirebon/Indramayu), Betawi
+PDRB_KAPITA_JUTA: 57.8
+JUMLAH_KAB_KOTA: 18 Kab, 9 Kota
+=======================================================
+* PETUNJUK PENGISIAN:
+1. Pastikan nama provinsi sesuai dengan 38 provinsi resmi di Indonesia.
+2. Jumlah penduduk diisi dengan angka bulat atau dengan akhiran 'Juta' (misal: 50.85 Juta).
+3. Total persentase seluruh agama (Islam, Kristen, Katolik, Hindu, Buddha, Konghucu) harus berjumlah 100%.
+4. Field MATA_PENCAHARIAN dan SEKTOR_UNGGULAN wajib diisi deskripsinya.
+5. Anda dapat menyalin blok di atas beberapa kali dalam 1 file untuk memperbarui banyak provinsi sekaligus.
+=======================================================
