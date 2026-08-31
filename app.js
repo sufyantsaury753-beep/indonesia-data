@@ -518,9 +518,9 @@ function styleFeature(feature) {
     if (isMatchedRegion) {
       return {
         fillColor: baseColor,
-        weight: 2.2,
+        weight: 2.0,
         opacity: 1.0,
-        color: '#0f172a',
+        color: '#ffffff',
         fillOpacity: 0.92
       };
     } else {
@@ -709,7 +709,7 @@ function initMapLayers() {
           badge.style.display = 'block';
 
           if (layer !== SELECTED_LAYER) {
-            layer.setStyle({ weight: 2.5, color: '#0f172a', fillOpacity: 0.95 });
+            layer.setStyle({ weight: 2.5, color: '#ffffff', fillOpacity: 0.95 });
             layer.bringToFront();
           }
         },
@@ -741,7 +741,7 @@ function openProvinceDrawer(name, layer) {
   }
   if (layer) {
     SELECTED_LAYER = layer;
-    SELECTED_LAYER.setStyle({ weight: 3, color: '#2563eb', fillOpacity: 1.0 });
+    SELECTED_LAYER.setStyle({ weight: 3.2, color: '#ffffff', fillOpacity: 1.0 });
     SELECTED_LAYER.bringToFront();
     map.fitBounds(layer.getBounds(), { padding: [30, 30], maxZoom: 7 });
   }
