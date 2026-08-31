@@ -418,11 +418,11 @@ function normalizeProvinceName(raw) {
   if (s.includes('BALI')) return 'Bali';
   if (s.includes('NUSATENGGARA BARAT') || s.includes('NUSA TENGGARA BARAT')) return 'Nusa Tenggara Barat';
   if (s.includes('NUSA TENGGARA TIMUR') || s.includes('NUSATENGGARA TIMUR')) return 'Nusa Tenggara Timur';
+  if (s.includes('KALIMANTAN UTARA')) return 'Kalimantan Utara';
+  if (s.includes('KALIMANTAN TIMUR')) return 'Kalimantan Timur';
   if (s.includes('KALIMANTAN BARAT')) return 'Kalimantan Barat';
   if (s.includes('KALIMANTAN TENGAH')) return 'Kalimantan Tengah';
   if (s.includes('KALIMANTAN SELATAN')) return 'Kalimantan Selatan';
-  if (s.includes('KALIMANTAN TIMUR')) return 'Kalimantan Timur';
-  if (s.includes('KALIMANTAN UTARA')) return 'Kalimantan Utara';
   if (s.includes('SULAWESI UTARA')) return 'Sulawesi Utara';
   if (s.includes('SULAWESI TENGAH')) return 'Sulawesi Tengah';
   if (s.includes('SULAWESI SELATAN')) return 'Sulawesi Selatan';
@@ -431,9 +431,12 @@ function normalizeProvinceName(raw) {
   if (s.includes('SULAWESI BARAT')) return 'Sulawesi Barat';
   if (s.includes('MALUKU UTARA')) return 'Maluku Utara';
   if (s.includes('MALUKU')) return 'Maluku';
-  if (s.includes('IRIAN JAYA BARAT') || s.includes('PAPUA BARAT')) return 'Papua Barat';
-  if (s.includes('IRIAN JAYA TENGAH') || s.includes('PAPUA TENGAH')) return 'Papua Tengah';
-  if (s.includes('IRIAN JAYA TIMUR') || s.includes('PAPUA')) return 'Papua';
+  if (s.includes('PAPUA BARAT DAYA')) return 'Papua Barat Daya';
+  if (s.includes('PAPUA BARAT') || s.includes('IRIAN JAYA BARAT')) return 'Papua Barat';
+  if (s.includes('PAPUA SELATAN')) return 'Papua Selatan';
+  if (s.includes('PAPUA TENGAH') || s.includes('IRIAN JAYA TENGAH')) return 'Papua Tengah';
+  if (s.includes('PAPUA PEGUNUNGAN')) return 'Papua Pegunungan';
+  if (s.includes('PAPUA') || s.includes('IRIAN JAYA TIMUR')) return 'Papua';
   return raw.trim();
 }
 
